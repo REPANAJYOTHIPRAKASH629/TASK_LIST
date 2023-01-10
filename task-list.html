@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TASK_LIST</title>
+	<link rel="stylesheet" href="MDB/css/bootstrap.css">
+	<link rel="stylesheet" href="MDB/css/mdb.css">
+	<link rel="stylesheet" href="FA/fa/css/all.css">
+</head>
+<body>
+	<div class="row mt-5">
+		<div class="col-md-6 m-auto">
+			<div class="card">
+				<div class="card-holder bg-info text-center text-white">
+					<h2>TASK-LIST</h2>
+				</div>
+				<div class="card-body">
+					<input type="text" placeholder="Enter Task" class="form-control" id="task">
+				</div>
+				<div class="form-group text-center">
+					<input type="submit" class="btn-secondary" value="ADD TASK">
+				</div>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-md-6 m-auto">
+				<ul class="list-group">
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- script code -->
+<script>
+	let taskForm = document.getElementById('task-form');
+	let inputElement = document.getElementById('task');
+	task Form.addEventListener('submit',function(event)
+	{
+		event.preventDefault();
+		let task=inputElement.value.trim();
+		let taskList=localStorage.getItem('tasks')?JSON.parse(localStorage.getItem('tasks')):[];
+		taskList.Unshift(task);
+		localStorage.setItem('tasks',Json.Stringify(taskList));
+		displaytask();
+	});
+
+
+	// display task
+
+	let displayTask=()=>
+	{
+		let ulTag=document.getElementById('task-list');
+		let taskList=localStorage.getItem('tasks')?JSON.parse(localStorage.getItem('tasks')):[];
+		if (taskList.length!==0)
+		{
+			let eachTask=``
+			for(let task of taskList)
+			{
+				eachTask=eachTask+`<li class="list-group-item list-group-item-warning mb-2
+							<span class="Font-Weight-bold">${task}</span>
+							<button class="close">
+							<i class="fa fa-times-circle"></i>
+							</button>
+							</li>`
+			}
+			ulTag.innerHTML=eachTask;	
+		}
+	}
+displayTask();
+
+// delete functionality
+
+let ulTag=document.getElementById('task-list');
+ulTag.addEventListener('click',function(event)
+{
+	let targetElement=event.target;
+	if (targetElement.classList.contains("fa-times-circle"))
+	{
+		let actualElement = targetElement.ParentElement.ParentElement;
+		let selectedText=actualElement.innerText;
+		let taskList=localStorage.getItem('tasks')?JSON.parse(localStorage.getItem('tasks')):[];
+		taskList=taskList.filter((task)=>
+		{
+			return task.trim()!==selectedText.trim();
+		})
+		localStorage.setItem('tasks',JSON.stringify(taskList));
+		displayTask();
+		window.reload();
+	}
+})
+
+</script>
+
+</body>
+</html>
